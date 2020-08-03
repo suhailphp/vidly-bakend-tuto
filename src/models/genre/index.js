@@ -15,7 +15,7 @@ module.exports = (SequelizeDB, DataTypes) => {
       type: DataTypes.STRING,
       description: "User`s full name",
       allowNull: false,
-      schema: Joi.string().required().label("Full Name English"),
+      schema: Joi.string().required().min(5).label("Full Name English"),
     },
   });
 

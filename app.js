@@ -13,14 +13,17 @@ const express = require("express");
 
 const appConfig = require("./src/configurations/appConfig.js");
 
+const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
+var parseForm = bodyParser.urlencoded({ extended: false });
 const app = express();
 const ENV = appConfig.ENV;
 
-/**
- *
- *  Middleware Init
- *
- */
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+app.use(bodyParser.raw());
+app.use(parseForm);
+app.use(bodyParser.json({ type: "application/json", limit: "50mb" }));
 
 app.set("port", appConfig.PORT);
 
