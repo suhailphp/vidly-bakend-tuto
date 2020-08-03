@@ -102,45 +102,11 @@ module.exports = () => {
   models.Op = sequelize.Op;
 
   if (appConfig.DB["SYNC"]) {
-    // models.SequelizeDB.sync({force: appConfig.DB.SYNC_FORCE, alter: appConfig.DB.ALTER}).then(async () => {
-    //     const [UserResp, created] = await models
-    //         .User
-    //         .findOrCreate({
-    //             where: {
-    //                 UserName: 'suhail',
-    //             },
-    //             defaults: {
-    //                 FullNameEn: 'Suhail Malayantavida',
-    //                 FullNameAr: 'سهيل مالايانتافيدا كونها عبدالله',
-    //                 UserName: 'suhail',
-    //                 Password: "7c337c005fd861d11d45cef7d7e00bc7d4e29f5b2932ea7f7e9cfe9c061944b6eb3027de0c7c77beb82b7919f9137f671a8e499812c76546c9b3085eb4325169",
-    //                 PasswordSalt: "a355fa04b0ddeaa6bcb1f8c2d9517049",
-    //                 UserCreatedUserName: 'suhail',
-    //                 UserType: 'ADMIN',
-    //                 Email: 'suhail@psa.ac.ae',
-    //                 IsManager: true,
-    //                 Active: true,
-    //                 ADLogin:false,
-    //             }
-    //         })
-    //     if (created)
-    //         debug('Default User Created, User: suhail')
-    // });
+    models.SequelizeDB.sync({
+      force: appConfig.DB.SYNC_FORCE,
+      alter: appConfig.DB.ALTER,
+    }).then(async () => {});
   }
 
   return models;
 };
-
-function getProperty(source, path) {
-  const next = path.shift();
-  if (typeof next === "undefined") {
-    return source;
-  }
-  if (typeof source[next] === "undefined") {
-    if (path.length === 0) {
-      return source[next];
-    }
-    throw new Error("Invalid path");
-  }
-  return getProperty(source[next], path);
-}
