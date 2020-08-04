@@ -14,9 +14,34 @@ module.exports = (Router, Models) => {
     res.send(Genre);
   });
 
-  Router.post("/", async (req, res) => {
-    console.log(JSON.stringify(req.body));
-    res.send(req.body);
+  Router.post("/", async (req, res, next) => {
+    await Models.Genre.create({ name: req.body.name }, { validate: true })
+      .then(async function (resData) {
+        res.send(resData);
+      })
+      .catch(async (error) => {
+        res.status(400).send(error.message);
+      });
+  });
+
+  Router.put("/:id", async (req, res) => {
+    const genre = await Models.Genre.findOne({
+      where: { genreID: req.params.id },
+    });
+
+    if (genre) {
+      genre.name = req.body.name;
+      genre
+        .save()
+        .then((resData) => {
+          res.send(genre);
+        })
+        .catch((error) => {
+          return res.status(404).send(error.message);
+        });
+    } else {
+      return res.status(404).send("The genre with the given ID was not found.");
+    }
   });
 
   return Router;

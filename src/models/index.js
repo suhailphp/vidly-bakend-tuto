@@ -110,3 +110,17 @@ module.exports = () => {
 
   return models;
 };
+
+function getProperty(source, path) {
+  const next = path.shift();
+  if (typeof next === "undefined") {
+    return source;
+  }
+  if (typeof source[next] === "undefined") {
+    if (path.length === 0) {
+      return source[next];
+    }
+    throw new Error("Invalid path");
+  }
+  return getProperty(source[next], path);
+}
