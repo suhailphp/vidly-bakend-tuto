@@ -1,4 +1,5 @@
 "use strict";
+const Joi = require("joi");
 
 module.exports = (SequelizeDB, DataTypes) => {
   let Movie = SequelizeDB.define("Movie", {
@@ -9,18 +10,21 @@ module.exports = (SequelizeDB, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
+      schema: Joi.string().required().min(3).label("Movie Title"),
     },
 
     numberInStock: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 0,
+      schema: Joi.number().required().label("Number in Stock"),
     },
     dailyRentalRate: {
       type: DataTypes.FLOAT,
       allowNull: true,
       defaultValue: 0,
+      schema: Joi.number().required().label("Rnetal Rate "),
     },
   });
 
@@ -30,11 +34,12 @@ module.exports = (SequelizeDB, DataTypes) => {
      */
 
     models.Movie.belongsTo(models.Genre, {
-      // onDelete: "CASCADE",
+      onUpdate: "CASCADE",
       as: "Genre",
       foreignKey: {
         name: "genreID",
         allowNull: true,
+        schema: Joi.number().required().label("Genre ID "),
       },
     });
   };
