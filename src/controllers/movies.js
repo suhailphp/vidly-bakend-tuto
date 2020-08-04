@@ -9,7 +9,14 @@ module.exports = (Router, Models) => {
   // options are csrfProtection, parseForm
 
   Router.get("/", async (req, res, next) => {
-    let Movie = await Models.Movie.findAll();
+    let Movie = await Models.Movie.findAll({
+      include: [
+        {
+          model: Models.Genre,
+          as: "Genre",
+        },
+      ],
+    });
     res.send(Movie);
   });
 
@@ -20,7 +27,7 @@ module.exports = (Router, Models) => {
       numberInStock: req.body.numberInStock,
       dailyRentalRate: req.body.dailyRentalRate,
     };
-    console.log(data);
+
     await Models.Movie.create(data, { validate: true })
       .then(async function (resData) {
         res.send(resData);
