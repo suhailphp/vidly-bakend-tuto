@@ -9,7 +9,6 @@ module.exports = (Router, Models) => {
   // options are csrfProtection, parseForm
 
   Router.get("/", async (req, res, next) => {
-    console.log(Models.Genre);
     let Genre = await Models.Genre.findAll();
     res.send(Genre);
   });
@@ -42,6 +41,36 @@ module.exports = (Router, Models) => {
     } else {
       return res.status(404).send("The genre with the given ID was not found.");
     }
+  });
+
+  Router.delete("/:id", async (req, res) => {
+    const genre = await Models.Genre.findOne({
+      where: { genreID: req.params.id },
+    });
+
+    if (genre) {
+      genre
+        .destroy()
+        .then(() => {
+          res.send(genre);
+        })
+        .catch((error) => {
+          return res.status(404).send(error.message);
+        });
+    } else {
+      return res.status(404).send("The genre with the given ID was not found.");
+    }
+  });
+
+  Router.get("/:id", async (req, res) => {
+    const genre = await Models.Genre.findOne({
+      where: { genreID: req.params.id },
+    });
+
+    if (!genre)
+      return res.status(404).send("The genre with the given ID was not found.");
+
+    res.send(genre);
   });
 
   return Router;
