@@ -22,7 +22,7 @@ module.exports = (Router, Models) => {
       return res.status(400).send("User Already exists");
     }
 
-    user = await Models.User.create(
+    Models.User.create(
       {
         name: req.body.name,
         email: req.body.email,
@@ -30,26 +30,25 @@ module.exports = (Router, Models) => {
       },
       { validate: true }
     )
-      .then(async function (resData) {
-        res.send(resData);
+      .then(function (resData) {
+        const token = jwt.sign(
+          {
+            UserID: resData.UserID,
+            name: resData.name,
+            email: resData.email,
+            isAdmin: resData.isAdmin,
+          },
+          appConfig.JWT_PRIVATE_KEY
+        );
+        res
+          .header("x-auth-token", token)
+          .header("access-control-expose-headers", "x-auth-token")
+          .send(resData);
       })
       .catch(async (error) => {
+        console.log(error);
         res.status(400).send(error.message);
       });
-
-    const token = jwt.sign(
-      {
-        UserID: user.UserID,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      },
-      appConfig.JWT_PRIVATE_KEY
-    );
-    res
-      .header("x-auth-token", token)
-      .header("access-control-expose-headers", "x-auth-token")
-      .send(_.pick(user, ["_id", "name", "email"]));
   });
 
   Router.put("/:id", async (req, res) => {
