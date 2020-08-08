@@ -94,7 +94,7 @@ module.exports = (Router, Models) => {
     });
 
     if (!user)
-      return res.status(404).send("Password or Username is not matching");
+      return res.status(400).send("Password or Username is not matching");
 
     const token = jwt.sign(
       {
