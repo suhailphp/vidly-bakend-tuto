@@ -5,6 +5,8 @@ const appConfig = require("../configurations/appConfig.js");
 const express = require("express");
 const router = express.Router();
 
+const jwt = require("jsonwebtoken");
+
 module.exports = (Router, Models) => {
   // options are csrfProtection, parseForm
 
@@ -15,9 +17,11 @@ module.exports = (Router, Models) => {
 
   Router.post("/", async (req, res, next) => {
     let User = await Models.User.findOne({ where: { email: req.body.email } });
+
     if (User && User.email === req.body.email) {
-      res.status(400).send("User Already exists");
+      return res.status(400).send("User Already exists");
     }
+
     await Models.User.create(
       {
         name: req.body.name,
@@ -82,6 +86,27 @@ module.exports = (Router, Models) => {
       return res.status(404).send("The user with the given ID was not found.");
 
     res.send(user);
+  });
+
+  Router.post("/auth", async (req, res) => {
+    const user = await Models.User.findOne({
+      where: { email: req.body.email, password: req.body.password },
+    });
+
+    if (!user)
+      return res.status(404).send("Password or Username is not matching");
+
+    const token = jwt.sign(
+      {
+        UserID: user.UserID,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+      appConfig.JWT_PRIVATE_KEY
+    );
+
+    res.send(token);
   });
 
   return Router;

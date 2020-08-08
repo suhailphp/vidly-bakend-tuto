@@ -24,7 +24,11 @@ module.exports = (SequelizeDB, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      schema: Joi.string().required().min(4).label("User Email"),
+      schema: Joi.string().required().min(4).label("User Password"),
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1,
     },
   });
 
