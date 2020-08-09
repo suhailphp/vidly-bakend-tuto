@@ -23,6 +23,6 @@ module.exports.isAdmin = function (req, res, next) {
   if (req.user && req.user.isAdmin) {
     return next();
   } else {
-    res.status(401).send("You don't have permission.");
+    res.status(403).send("You don't have permission.");
   }
 };
