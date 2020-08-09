@@ -22,7 +22,7 @@ module.exports = (Router, Models) => {
     res.send(Movie);
   });
 
-  Router.post("/", async (req, res, next) => {
+  Router.post("/", apiAuthentication, async (req, res, next) => {
     let data = {
       title: req.body.title,
       genreID: req.body.genreID,
@@ -39,7 +39,7 @@ module.exports = (Router, Models) => {
       });
   });
 
-  Router.put("/:id", async (req, res) => {
+  Router.put("/:id", apiAuthentication, async (req, res) => {
     const Movie = await Models.Movie.findOne({
       where: { MovieID: req.params.id },
     });
@@ -61,7 +61,7 @@ module.exports = (Router, Models) => {
     }
   });
 
-  Router.delete("/:id", async (req, res) => {
+  Router.delete("/:id", apiAuthentication, async (req, res) => {
     const Movie = await Models.Movie.findOne({
       where: { MovieID: req.params.id },
     });
@@ -79,7 +79,7 @@ module.exports = (Router, Models) => {
     }
   });
 
-  Router.get("/:id", async (req, res) => {
+  Router.get("/:id", apiAuthentication, async (req, res) => {
     const Movie = await Models.Movie.findOne({
       where: { MovieID: req.params.id },
     });
