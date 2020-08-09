@@ -15,6 +15,7 @@ const appConfig = require("./src/configurations/appConfig.js");
 
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
+const cors = require("cors");
 var parseForm = bodyParser.urlencoded({ extended: false });
 const app = express();
 const ENV = appConfig.ENV;
@@ -25,10 +26,12 @@ app.use(bodyParser.raw());
 app.use(parseForm);
 app.use(bodyParser.json({ type: "application/json", limit: "50mb" }));
 // Add headers
+
+app.use(cors());
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-  // res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*");
 
   // Request methods you wish to allow
   res.setHeader(

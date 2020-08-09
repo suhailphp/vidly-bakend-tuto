@@ -10,7 +10,7 @@ const router = express.Router();
 module.exports = (Router, Models) => {
   // options are csrfProtection, parseForm
 
-  Router.get("/", [apiAuthentication], async (req, res, next) => {
+  Router.get("/", apiAuthentication, async (req, res, next) => {
     let Movie = await Models.Movie.findAll({
       include: [
         {
