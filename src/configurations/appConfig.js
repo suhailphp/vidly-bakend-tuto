@@ -29,6 +29,8 @@ module.exports = {
   SOCKET_URL: process.env.SOCKET_URL,
   SESSION_SECRET: process.env.SESSION_SECRET,
   JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY,
+  REQUIRE_AUTH:
+    process.env.REQUIRE_AUTH && process.env.REQUIRE_AUTH === "1" ? true : false,
   DB: {
     DIALECT: process.env.DB_DIALECT,
     DATABASE: process.env.DB_NAME,
