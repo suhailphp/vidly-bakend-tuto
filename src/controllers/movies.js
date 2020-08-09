@@ -2,13 +2,15 @@
 
 const appConfig = require("../configurations/appConfig.js");
 
+const { apiAuthentication } = require("../middlewares/gatekeeper");
+
 const express = require("express");
 const router = express.Router();
 
 module.exports = (Router, Models) => {
   // options are csrfProtection, parseForm
 
-  Router.get("/", async (req, res, next) => {
+  Router.get("/", apiAuthentication, async (req, res, next) => {
     let Movie = await Models.Movie.findAll({
       include: [
         {
