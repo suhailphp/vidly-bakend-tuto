@@ -17,3 +17,12 @@ module.exports.apiAuthentication = function (req, res, next) {
     res.status(400).send("Invalid token.");
   }
 };
+
+module.exports.isAdmin = function (req, res, next) {
+  if (!appConfig.REQUIRE_AUTH) return next();
+  if (req.user && req.user.isAdmin) {
+    return next();
+  } else {
+    res.status(401).send("You don't have permission.");
+  }
+};

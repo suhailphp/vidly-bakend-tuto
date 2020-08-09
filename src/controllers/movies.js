@@ -2,7 +2,7 @@
 
 const appConfig = require("../configurations/appConfig.js");
 
-const { apiAuthentication } = require("../middlewares/gatekeeper");
+const { apiAuthentication, isAdmin } = require("../middlewares/gatekeeper");
 
 const express = require("express");
 const router = express.Router();
@@ -10,7 +10,7 @@ const router = express.Router();
 module.exports = (Router, Models) => {
   // options are csrfProtection, parseForm
 
-  Router.get("/", apiAuthentication, async (req, res, next) => {
+  Router.get("/", [apiAuthentication], async (req, res, next) => {
     let Movie = await Models.Movie.findAll({
       include: [
         {
@@ -61,7 +61,7 @@ module.exports = (Router, Models) => {
     }
   });
 
-  Router.delete("/:id", apiAuthentication, async (req, res) => {
+  Router.delete("/:id", [apiAuthentication, isAdmin], async (req, res) => {
     const Movie = await Models.Movie.findOne({
       where: { MovieID: req.params.id },
     });
