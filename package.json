@@ -72,7 +72,7 @@
     "unoconv-promise": "^1.0.8",
     "uuid": "^3.4.0",
     "web-push": "^3.4.3",
-    "xlsx": "^0.13.5",
+    "xlsx": "^0.17.0",
     "xss-filters": "^1.2.7"
   },
   "devDependencies": {
