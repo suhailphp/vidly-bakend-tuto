@@ -30,7 +30,7 @@
   "dependencies": {
     "@vitalets/google-translate-api": "github:vitalets/google-translate-api",
     "activedirectory": "^0.7.2",
-    "async": "^2.6.3",
+    "async": "^2.6.4",
     "bignumber.js": "^7.2.1",
     "body-parser": "^1.19.0",
     "bull": "^3.13.0",
